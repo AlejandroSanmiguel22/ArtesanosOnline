@@ -32,7 +32,7 @@ import food_33 from '../assets/sublist/food_33.png';
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = ({ children }) => {
-  const url = "https://artesanosonline-backend-ak8f.onrender.com;
+  const url = "https://artesanosonline-backend-ak8f.onrender.com";
 
   // Menú estático con imágenes correctas
   const [menu_list] = useState([
