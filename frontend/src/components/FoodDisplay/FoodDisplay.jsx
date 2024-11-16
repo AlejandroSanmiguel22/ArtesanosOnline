@@ -1,24 +1,41 @@
-import React, { useContext } from 'react'
-import './FoodDisplay.css'
-import FoodItem from '../FoodItem/FoodItem'
-import { StoreContext } from '../../Context/StoreContext'
+import { useContext } from 'react';
+import PropTypes from 'prop-types';
+import './FoodDisplay.css';
+import FoodItem from '../FoodItem/FoodItem';
+import { StoreContext } from '../../Context/StoreContext';
 
-const FoodDisplay = ({category}) => {
+const FoodDisplay = ({ category }) => {
+  const { foodList } = useContext(StoreContext);
 
-  const {food_list} = useContext(StoreContext);
+  // Validar si foodList está cargando o no tiene datos
+  if (!foodList || foodList.length === 0) {
+    return <p>Loading food items...</p>;
+  }
 
   return (
-    <div className='food-display' id='food-display'>
+    <div className="food-display" id="food-display">
       <h2>Las mejores artesanías cerca de ti</h2>
-      <div className='food-display-list'>
-        {food_list.map((item)=>{
-          if (category==="All" || category===item.category) {
-            return <FoodItem key={item._id} image={item.image} name={item.name} desc={item.description} price={item.price} id={item._id}/>
-          }
-        })}
+      <div className="food-display-list">
+        {foodList
+          .filter((item) => category === 'All' || item.category === category) // Filtrar por categoría
+          .map((item) => (
+            <FoodItem
+              key={item._id} // Asegurarse de que _id sea único
+              image={item.image}
+              name={item.name}
+              desc={item.description}
+              price={item.price}
+              id={item._id}
+            />
+          ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FoodDisplay
+// Validaciones con PropTypes
+FoodDisplay.propTypes = {
+  category: PropTypes.string.isRequired, // La categoría debe ser una cadena y es requerida
+};
+
+export default FoodDisplay;
